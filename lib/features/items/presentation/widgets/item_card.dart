@@ -1,4 +1,5 @@
 import 'package:admin/features/items/bloc/items_bloc.dart';
+import 'package:admin/features/items/presentation/screens/update_item_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/items_events.dart';
@@ -6,7 +7,10 @@ import '../../modules/product.dart';
 
 class ProductCard extends StatefulWidget {
   final ProductModule product;
-  const ProductCard({Key? key, required this.product}) : super(key: key);
+  const ProductCard({
+    Key? key,
+    required this.product,
+  }) : super(key: key);
 
   @override
   State<ProductCard> createState() => _ProductCardState();
@@ -40,20 +44,27 @@ class _ProductCardState extends State<ProductCard> {
                   TextButton(
                     onPressed: () {
                       context.read<ItemsBloc>().add(RemoveItem(
-                          id: widget.product.id,
-                          imageUrl: widget.product.image));
+                            id: widget.product.id,
+                            imageUrl: widget.product.image,
+                          ));
                     },
                     child: const Text(
                       "Delete",
                       style: TextStyle(color: Colors.red),
                     ),
                   ),
-                  //Text(product.weight.toString()),
                   TextButton(
                     onPressed: () {
-                      context
-                          .read<ItemsBloc>()
-                          .add(UpdateItem(product: widget.product));
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => UpdateItemPage(
+                            id: widget.product.id,
+                            image: widget.product.image,
+                            name: widget.product.name,
+                            pointsPerKg: widget.product.pointsPerKg,
+                          ),
+                        ),
+                      );
                     },
                     child: const Text("Update"),
                   ),

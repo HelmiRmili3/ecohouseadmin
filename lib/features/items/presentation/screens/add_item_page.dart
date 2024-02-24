@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:admin/core/constants.dart';
 import 'package:admin/features/auth/presentation/widgets/custom_form_field.dart';
 import 'package:admin/features/items/bloc/items_bloc.dart';
 import 'package:admin/features/items/modules/product.dart';
@@ -69,7 +70,9 @@ class _AddItemPageState extends State<AddItemPage> {
                         _selectedImage = await pickImage();
                         setState(() {});
                       },
-                      child: PickImageWidget(image: _selectedImage),
+                      child: PickImageWidget(
+                          placeholderImage: Constants.placeholderLink,
+                          image: _selectedImage),
                     ),
                     const SizedBox(height: 20),
                     CustomFormField(

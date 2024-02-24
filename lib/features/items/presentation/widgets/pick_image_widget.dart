@@ -3,11 +3,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 class PickImageWidget extends StatefulWidget {
+  final String placeholderImage;
   final File? image;
 
   const PickImageWidget({
     super.key,
     required this.image,
+    required this.placeholderImage,
   });
 
   @override
@@ -34,8 +36,8 @@ class _PickImageWidgetState extends State<PickImageWidget> {
                       widget.image!,
                       fit: BoxFit.cover,
                     )
-                  : Image.asset(
-                      'assets/image_placeholder.png',
+                  : Image.network(
+                      widget.placeholderImage,
                       fit: BoxFit.cover,
                     ),
             ),
@@ -43,22 +45,6 @@ class _PickImageWidgetState extends State<PickImageWidget> {
           const SizedBox(
             height: 20,
           )
-          // Positioned(
-          //   bottom: 0,
-          //   right: 0,
-          //   width: 40,
-          //   height: 40,
-          //   child: ClipOval(
-          //     child: Container(
-          //       color: Colors.amber,
-          //       child: const IconButton(
-          //         onPressed: null,
-          //         icon: Icon(Icons.camera),
-          //         color: Colors.white,
-          //       ),
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );

@@ -57,7 +57,25 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
   Future<void> _mapUpdateItemToState(
       UpdateItem event, Emitter<ItemsState> emit) async {
     try {
-      await repository.updateProduct(event.product);
+      if (event.image != null) {
+        String oldImageUrl = event.product.image;
+        await repository
+            .updateProduct(
+              ProductModule(
+                id: event.product.id,
+                name: event.product.name,
+                weight: event.product.weight,
+                pointsPerKg: event.product.pointsPerKg,
+                image:
+                    await repository.uploadImageToFirebaseStorage(event.image),
+              ),
+            )
+            .then((value) =>
+                repository.deleteImageFromFirebaseStorage(oldImageUrl));
+      } else {
+        await repository.updateProduct(event.product);
+      }
+      //await repository.deleteImageFromFirebaseStorage(event.product.image);
     } catch (e) {
       throw Exception('Failed to update product to Firestore');
     }

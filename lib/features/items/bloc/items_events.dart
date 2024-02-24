@@ -32,8 +32,12 @@ class RemoveItem extends ItemsEvent {
 
 class UpdateItem extends ItemsEvent {
   final ProductModule product;
+  final File? image;
 
-  const UpdateItem({required this.product});
+  const UpdateItem({
+    required this.image,
+    required this.product,
+  });
 
   @override
   List<Object?> get props => [product];

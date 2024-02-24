@@ -7,28 +7,27 @@ class ProductModule {
   final int pointsPerKg;
   final String image;
   int weight;
-  ProductModule(
-      {required this.id,
-      required this.name,
-      required this.pointsPerKg,
-      required this.image,
-      required this.weight});
+  ProductModule({
+    required this.id,
+    required this.name,
+    required this.pointsPerKg,
+    required this.image,
+    required this.weight,
+  });
 
-  // factory constructor to create a product with a generated ID
   factory ProductModule.create(
       {required String name,
       required int pointsPerKg,
       required int weight,
-       String image =""}) {
+      String image = ""}) {
     final String productId = const Uuid().v1();
     return ProductModule(
-        id: productId,
-        name: name,
-        pointsPerKg: pointsPerKg,
-        weight: weight,
-        image: image
-        // other properties...
-        );
+      id: productId,
+      name: name,
+      pointsPerKg: pointsPerKg,
+      weight: weight,
+      image: image,
+    );
   }
 
   factory ProductModule.fromJson(Map<String, dynamic> json) => ProductModule(

@@ -23,7 +23,6 @@ class ItemsRepository {
       // Set the document reference (docRef) to be the same as the product ID
       DocumentReference docRef =
           _firebaseFirestore.collection('products').doc(product.id);
-
       // Set the document data using the set method
       await docRef.set(product.toJson());
     } catch (e) {
@@ -38,7 +37,6 @@ class ItemsRepository {
           _firebaseFirestore.collection('products');
       DocumentReference itemDocument = collection.doc(productId);
       await itemDocument.delete();
-
     } catch (e) {
       throw Exception('Failed to remove product from Firestore: $e');
     }

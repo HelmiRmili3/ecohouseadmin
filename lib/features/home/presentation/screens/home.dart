@@ -27,26 +27,49 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: pages[myCurrentIndex],
       bottomNavigationBar: Container(
-        decoration:const BoxDecoration(
-        color: Colors.transparent, // Set transparent color
-        boxShadow: [], // Remove any shadows
-      ),
+        decoration: const BoxDecoration(
+          color: Colors.transparent, // Set transparent color
+          boxShadow: [], // Remove any shadows
+        ),
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed, // Set type to fixed
-         // backgroundColor: Colors.transparent.withOpacity(0.9), // Set transparent color
-        //  elevation: 0, // Set elevation to 0
+          // backgroundColor: Colors.transparent.withOpacity(0.9), // Set transparent color
+            elevation: 0, // Set elevation to 0
+
           onTap: (index) {
             setState(() {
               myCurrentIndex = index;
             });
           },
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Items"),
-            BottomNavigationBarItem(icon: Icon(Icons.list), label: "Orders"),
+          items: [
             BottomNavigationBarItem(
-                icon: Icon(Icons.shop_outlined), label: "Shop"),
+              icon: Icon(
+                Icons.home,
+                color: myCurrentIndex == 0 ? Colors.black : Colors.grey,
+              ),
+              label: "Items",
+            ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.person_outline), label: "Profile"),
+              icon: Icon(
+                Icons.list,
+                color: myCurrentIndex == 1 ? Colors.black : Colors.grey,
+              ),
+              label: "Orders",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.shop_outlined,
+                color: myCurrentIndex == 2 ? Colors.black : Colors.grey,
+              ),
+              label: "Shop",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person_outline,
+                color: myCurrentIndex == 3 ? Colors.black : Colors.grey,
+              ),
+              label: "Profile",
+            ),
           ],
         ),
       ),
