@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "54095997117",
+    "project_id": "ecohouse-71487",
+    "storage_bucket": "ecohouse-71487.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:54095997117:android:3703731e08d67a84f2afd4",
+        "android_client_info": {
+          "package_name": "com.example.admin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRyXjuklS73GVngIR6-LMo8MeTFEXDqDo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:54095997117:android:962f982fb4f71ac6f2afd4",
+        "android_client_info": {
+          "package_name": "com.example.ecohouse"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRyXjuklS73GVngIR6-LMo8MeTFEXDqDo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
