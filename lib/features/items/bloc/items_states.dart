@@ -5,7 +5,6 @@ abstract class ItemsState extends Equatable {
   const ItemsState();
   @override
   List<Object> get props => [];
-
   Object? get items => props;
 }
 

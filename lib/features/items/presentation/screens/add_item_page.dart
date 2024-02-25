@@ -1,13 +1,12 @@
 import 'dart:io';
 
-import 'package:admin/core/constants.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:admin/features/auth/presentation/widgets/custom_form_field.dart';
 import 'package:admin/features/items/bloc/items_bloc.dart';
 import 'package:admin/features/items/modules/product.dart';
 import 'package:admin/features/items/repository/items_repository.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
+import '../../../../core/constants.dart';
 import '../../../../utils/app_utils.dart';
 import '../../bloc/items_events.dart';
 import '../widgets/pick_image_widget.dart';
@@ -30,7 +29,7 @@ class _AddItemPageState extends State<AddItemPage> {
     try {
       ProductModule productModule = ProductModule.create(
         name: _nameController.text,
-        pointsPerKg: int.tryParse(_pointsController.text)!,
+        pointsPerKg: int.tryParse(_pointsController.text) ?? 0,
         weight: 0,
       );
       context
@@ -53,7 +52,7 @@ class _AddItemPageState extends State<AddItemPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add item"),
+        title: const Text("Add Item"),
         centerTitle: true,
       ),
       body: Center(
@@ -61,49 +60,51 @@ class _AddItemPageState extends State<AddItemPage> {
           minimum: const EdgeInsets.all(16.0),
           child: SingleChildScrollView(
             child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    GestureDetector(
-                      onTap: () async {
-                        _selectedImage = await pickImage();
-                        setState(() {});
-                      },
-                      child: PickImageWidget(
-                          placeholderImage: Constants.placeholderLink,
-                          image: _selectedImage),
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      _selectedImage = await pickImage();
+                      setState(() {});
+                    },
+                    child: PickImageWidget(
+                      placeholderImage: Constants.placeholderLink,
+                      image: _selectedImage,
                     ),
-                    const SizedBox(height: 20),
-                    CustomFormField(
-                      keyboardType: TextInputType.text,
-                      labelText: "Name",
-                      controller: _nameController,
-                    ),
-                    const SizedBox(height: 20),
-                    CustomFormField(
-                        keyboardType: TextInputType.number,
-                        labelText: "Points Per Kg",
-                        controller: _pointsController),
-                    const SizedBox(height: 20),
-                    BlocProvider(
-                      create: (context) =>
-                          ItemsBloc(repository: ItemsRepository()),
-                      child: ElevatedButton(
-                        onPressed: addItem,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              Colors.blueAccent[100], // background color
-                          padding: const EdgeInsets.all(18.0), // padding
-                        ),
-                        child: const Text(
-                          "Add",
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        ),
+                  ),
+                  const SizedBox(height: 20),
+                  CustomFormField(
+                    keyboardType: TextInputType.text,
+                    labelText: "Name",
+                    controller: _nameController,
+                  ),
+                  const SizedBox(height: 20),
+                  CustomFormField(
+                    keyboardType: TextInputType.number,
+                    labelText: "Points Per Kg",
+                    controller: _pointsController,
+                  ),
+                  const SizedBox(height: 20),
+                  BlocProvider(
+                    create: (context) =>
+                        ItemsBloc(repository: ItemsRepository()),
+                    child: ElevatedButton(
+                      onPressed: addItem,
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blueAccent[100],
+                        padding: const EdgeInsets.all(18.0),
+                      ),
+                      child: const Text(
+                        "Add",
+                        style: TextStyle(color: Colors.white, fontSize: 18),
                       ),
                     ),
-                  ],
-                )),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),

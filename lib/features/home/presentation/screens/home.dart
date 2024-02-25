@@ -1,7 +1,7 @@
 import 'package:admin/features/items/presentation/screens/items.dart';
 import 'package:admin/features/orders/presentation/screens/orders.dart';
 import 'package:admin/features/profile/presentation/screens/profile.dart';
-import 'package:admin/features/shop/presentation/shop.dart';
+import 'package:admin/features/shop/presentation/screens/shop.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int myCurrentIndex = 0;
   List<Widget> pages = const [Items(), Orders(), Shop(), Profile()];
-  List<String> titles = const ["Items", "Orders", "Shop", "Profile"];
+  List<String> titles = const ["Home", "Orders", "Shop", "Profile"];
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +28,12 @@ class _HomeScreenState extends State<HomeScreen> {
       body: pages[myCurrentIndex],
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
-          color: Colors.transparent, // Set transparent color
-          boxShadow: [], // Remove any shadows
+          color: Colors.transparent,
+          boxShadow: [],
         ),
         child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed, // Set type to fixed
-          // backgroundColor: Colors.transparent.withOpacity(0.9), // Set transparent color
-            elevation: 0, // Set elevation to 0
-
+          type: BottomNavigationBarType.fixed,
+          elevation: 0,
           onTap: (index) {
             setState(() {
               myCurrentIndex = index;
@@ -47,28 +45,28 @@ class _HomeScreenState extends State<HomeScreen> {
                 Icons.home,
                 color: myCurrentIndex == 0 ? Colors.black : Colors.grey,
               ),
-              label: "Items",
+              label: titles[myCurrentIndex],
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.list,
                 color: myCurrentIndex == 1 ? Colors.black : Colors.grey,
               ),
-              label: "Orders",
+              label: titles[myCurrentIndex],
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.shop_outlined,
                 color: myCurrentIndex == 2 ? Colors.black : Colors.grey,
               ),
-              label: "Shop",
+              label: titles[myCurrentIndex],
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.person_outline,
                 color: myCurrentIndex == 3 ? Colors.black : Colors.grey,
               ),
-              label: "Profile",
+              label: titles[myCurrentIndex],
             ),
           ],
         ),

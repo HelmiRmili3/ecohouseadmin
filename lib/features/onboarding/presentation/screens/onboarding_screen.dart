@@ -19,21 +19,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       'title': 'Welcome to MyApp',
       'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
       'imageUrl':
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQX-XW8QqOrlmjRUbzbqwkMoCb61rw6UkkhJPVFT3bWn6_2mFBKslhmxpWo2UUzK_fj1rk&usqp=CAU',
+          'https://images.unsplash.com/photo-1503435980610-a51f3ddfee50?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDJ8fHxlbnwwfHx8fHw%3D'
     },
     {
       'title': 'Discover New Features',
       'description':
           'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
       'imageUrl':
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1Mq8OTXyAemBtQNGOSkiXZnrdph5DBJ_nfyUjiF1eoH7fGydmEkWEWNypGlPTHutpnAw&usqp=CAU',
+          'https://images.unsplash.com/photo-1502416737817-0b60dacb6503?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
     },
     {
       'title': 'Get Started Now',
       'description':
           'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.',
       'imageUrl':
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwnouU4UvHVrxWIYo71t3QAJvzPceNkPDIll6rNjt_DMyI40OSGfLn621dkIhidOadNpE&usqp=CAU',
+          'https://images.unsplash.com/photo-1494523809379-5f04ec5e72b6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
     },
   ];
 
@@ -94,7 +94,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         curve: Curves.ease,
                       );
                     } else {
-                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
                       await prefs.setBool('first_time', false);
                       // ignore: use_build_context_synchronously
                       Navigator.pushReplacementNamed(context, Routes.login);
