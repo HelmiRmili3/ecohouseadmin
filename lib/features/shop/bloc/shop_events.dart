@@ -14,9 +14,11 @@ class FetchProducts extends ShopEvent {
 }
 
 class AddProduct extends ShopEvent {
-  late final ItemModule item;
+  final ItemModule item;
+  final File? selectedImage;
+  const AddProduct({required this.item,  this.selectedImage});
   @override
-  List<Object?> get props => [item];
+  List<Object?> get props => [item, selectedImage];
 }
 
 class DeleteProduct extends ShopEvent {

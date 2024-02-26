@@ -20,33 +20,28 @@ class _PickImageWidgetState extends State<PickImageWidget> {
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
-    return Container(
-      decoration: const BoxDecoration(
-        shape: BoxShape.rectangle,
-      ),
-      child: Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-            child: SizedBox(
-              width: width, // Adjust width as needed
-              height: 300, // Adjust height as needed
-              child: widget.image != null
-                  ? Image.file(
-                      widget.image!,
-                      fit: BoxFit.cover,
-                    )
-                  : Image.network(
-                      widget.placeholderImage,
-                      fit: BoxFit.cover,
-                    ),
-            ),
+    return Column(
+      children: [
+        SizedBox(
+          width: width, // Adjust width as needed
+          height: 300, // Adjust height as needed
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: widget.image != null
+              ? Image.file(
+                  widget.image!,
+                  fit: BoxFit.cover,
+                )
+              : Image.network(
+                  widget.placeholderImage,
+                  fit: BoxFit.cover,
+                ),
           ),
-          const SizedBox(
-            height: 20,
-          )
-        ],
-      ),
+        ),
+        const SizedBox(
+          height: 20,
+        )
+      ],
     );
   }
 }

@@ -51,8 +51,6 @@ class _UpdateItemPageState extends State<UpdateItemPage> {
 
   Future<void> updateItem() async {
     try {
-      //BlocProvider.of<ItemsBloc>(context).repository.deleteImageFromFirebaseStorage(widget.image);
-      //BlocProvider.of<ItemsBloc>(context).repository.uploadImageToFirebaseStorage(_selectedImage);
       ProductModule productModule = ProductModule(
         id: widget.id,
         name: _nameController.text,

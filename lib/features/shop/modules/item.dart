@@ -20,7 +20,7 @@ class ItemModule {
     required String name,
     required int points,
     required String description,
-    required String imageUrl,
+    String? imageUrl = "",
   }) {
     final String itemId = const Uuid().v1();
     return ItemModule(
@@ -28,7 +28,7 @@ class ItemModule {
       name: name,
       points: points,
       description: description,
-      imageUrl: imageUrl,
+      imageUrl: imageUrl!,
     );
   }
 

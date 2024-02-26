@@ -1,38 +1,40 @@
 import 'dart:io';
 
+import 'package:admin/features/shop/bloc/shop_events.dart';
+import 'package:admin/features/shop/modules/item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:admin/features/auth/presentation/widgets/custom_form_field.dart';
-import 'package:admin/features/items/bloc/items_bloc.dart';
-import 'package:admin/features/items/modules/product.dart';
+
 import '../../../../core/constants.dart';
 import '../../../../utils/app_utils.dart';
-import '../../bloc/items_events.dart';
-import '../widgets/pick_image_widget.dart';
+import '../../../auth/presentation/widgets/custom_form_field.dart';
+import '../../../items/presentation/widgets/pick_image_widget.dart';
+import '../../bloc/shop_bloc.dart';
 
-class AddItemPage extends StatefulWidget {
-  const AddItemPage({super.key});
+class AddProductPage extends StatefulWidget {
+  const AddProductPage({super.key});
 
   @override
-  State<AddItemPage> createState() => _AddItemPageState();
+  State<AddProductPage> createState() => _AddProductPageState();
 }
 
-class _AddItemPageState extends State<AddItemPage> {
+class _AddProductPageState extends State<AddProductPage> {
   File? _selectedImage;
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _pointsController = TextEditingController();
+  final TextEditingController _discriptionController = TextEditingController();
 
-  Future<void> addItem() async {
+  Future<void> addProduct() async {
     try {
-      ProductModule productModule = ProductModule.create(
+      ItemModule item = ItemModule.create(
         name: _nameController.text,
-        pointsPerKg: int.tryParse(_pointsController.text) ?? 0,
-        weight: 0,
+        points: int.tryParse(_pointsController.text) ?? 0,
+        description: _discriptionController.text,
       );
-      context.read<ItemsBloc>().add(AddItem(
-            product: productModule,
+      context.read<ShopBloc>().add(AddProduct(
+            item: item,
             selectedImage: _selectedImage,
           ));
       Navigator.of(context).pop();
@@ -45,6 +47,7 @@ class _AddItemPageState extends State<AddItemPage> {
   void dispose() {
     _nameController.dispose();
     _pointsController.dispose();
+    _discriptionController.dispose();
     super.dispose();
   }
 
@@ -52,7 +55,7 @@ class _AddItemPageState extends State<AddItemPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add Item"),
+        title: const Text("Add Product"),
         centerTitle: true,
       ),
       body: Center(
@@ -83,12 +86,18 @@ class _AddItemPageState extends State<AddItemPage> {
                   const SizedBox(height: 20),
                   CustomFormField(
                     keyboardType: TextInputType.number,
-                    labelText: "Points Per Kg",
+                    labelText: "Points",
                     controller: _pointsController,
                   ),
                   const SizedBox(height: 20),
+                  CustomFormField(
+                    keyboardType: TextInputType.text,
+                    labelText: "Description",
+                    controller: _discriptionController,
+                  ),
+                  const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: addItem,
+                    onPressed: addProduct,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blueAccent[100],
                       padding: const EdgeInsets.all(18.0),
