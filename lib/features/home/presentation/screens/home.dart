@@ -29,9 +29,13 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           color: Colors.transparent,
+          shape: BoxShape.circle,
           boxShadow: [],
         ),
         child: BottomNavigationBar(
+          selectedItemColor: Colors.black,
+          unselectedItemColor: Colors.grey,
+          currentIndex: myCurrentIndex,
           type: BottomNavigationBarType.fixed,
           elevation: 0,
           onTap: (index) {
@@ -41,32 +45,28 @@ class _HomeScreenState extends State<HomeScreen> {
           },
           items: [
             BottomNavigationBarItem(
-              icon: Icon(
+              icon: const Icon(
                 Icons.home,
-                color: myCurrentIndex == 0 ? Colors.black : Colors.grey,
               ),
-              label: titles[myCurrentIndex],
+              label: titles[0],
             ),
             BottomNavigationBarItem(
-              icon: Icon(
+              icon: const Icon(
                 Icons.list,
-                color: myCurrentIndex == 1 ? Colors.black : Colors.grey,
               ),
-              label: titles[myCurrentIndex],
+              label: titles[1],
             ),
             BottomNavigationBarItem(
-              icon: Icon(
+              icon: const Icon(
                 Icons.shop_outlined,
-                color: myCurrentIndex == 2 ? Colors.black : Colors.grey,
               ),
-              label: titles[myCurrentIndex],
+              label: titles[2],
             ),
             BottomNavigationBarItem(
-              icon: Icon(
+              icon: const Icon(
                 Icons.person_outline,
-                color: myCurrentIndex == 3 ? Colors.black : Colors.grey,
               ),
-              label: titles[myCurrentIndex],
+              label: titles[3],
             ),
           ],
         ),
