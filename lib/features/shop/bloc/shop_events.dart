@@ -16,13 +16,14 @@ class FetchProducts extends ShopEvent {
 class AddProduct extends ShopEvent {
   final ItemModule item;
   final File? selectedImage;
-  const AddProduct({required this.item,  this.selectedImage});
+  const AddProduct({required this.item, this.selectedImage});
   @override
   List<Object?> get props => [item, selectedImage];
 }
 
 class DeleteProduct extends ShopEvent {
-  late final ItemModule item;
+  final ItemModule item;
+  const DeleteProduct({required this.item});
   @override
   List<Object?> get props => [item];
 }

@@ -1,18 +1,18 @@
+
+import 'package:admin/features/shop/bloc/shop_bloc.dart';
+import 'package:admin/features/shop/bloc/shop_events.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../modules/item.dart';
 
 class ShopCard extends StatelessWidget {
-  final String imageUrl;
-  final String name;
-  final int points;
-  final String description;
+  final ItemModule item;
 
   const ShopCard({
-    super.key,
-    required this.imageUrl,
-    required this.name,
-    required this.points,
-    required this.description,
-  });
+    Key? key,
+    required this.item,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class ShopCard extends StatelessWidget {
                 height: 150,
                 color: Colors.grey[300],
                 child: Image.network(
-                  imageUrl,
+                  item.imageUrl,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -40,16 +40,16 @@ class ShopCard extends StatelessWidget {
                   children: [
                     // Product name
                     Text(
-                      name,
+                      item.name,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 5),
-                    // Price
+                    // Points
                     Text(
-                      '\$$points',
+                      '\$${item.points}',
                       style: const TextStyle(
                         fontSize: 16,
                         color: Colors.green,
@@ -58,7 +58,7 @@ class ShopCard extends StatelessWidget {
                     const SizedBox(height: 5),
                     // Description
                     Text(
-                      description,
+                      item.description,
                       style: const TextStyle(fontSize: 14),
                     ),
                     const SizedBox(height: 10),
@@ -69,7 +69,7 @@ class ShopCard extends StatelessWidget {
                         ElevatedButton(
                           onPressed: () {
                             // Edit logic
-                            // print('Edit: $productName');
+                            //context.read<ItemsBloc>().add(UpdateItem(item: item));
                           },
                           child: const Text('Edit'),
                         ),
@@ -77,7 +77,9 @@ class ShopCard extends StatelessWidget {
                         ElevatedButton(
                           onPressed: () {
                             // Delete logic
-                            //  print('Delete: $productName');
+                            context
+                                .read<ShopBloc>()
+                                .add(DeleteProduct(item: item));
                           },
                           child: const Text('Delete'),
                         ),

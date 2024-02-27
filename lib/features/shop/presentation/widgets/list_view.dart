@@ -54,10 +54,7 @@ class ShopListView extends StatelessWidget {
                 return const AddProductCard();
               } else {
                 return ShopCard(
-                  imageUrl: items[index].imageUrl,
-                  name: items[index].name,
-                  points: items[index].points,
-                  description: items[index].description,
+                  item: items[index],
                 );
               }
             },

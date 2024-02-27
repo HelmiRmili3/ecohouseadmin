@@ -1,6 +1,9 @@
 class Validators {
-  static bool isEmailValid(String email) {
-    // Implement email validation logic here
-    return true; // For simplicity, always returning true
+  bool isEmailValid(String email) {
+    // Regular expression pattern for email validation
+    RegExp emailRegex = RegExp(
+      r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[\w-]{2,}$',
+    );
+    return emailRegex.hasMatch(email);
   }
 }

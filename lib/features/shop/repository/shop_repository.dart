@@ -50,4 +50,24 @@ class ShopRepository {
 
     return imageUrl;
   }
+
+  Future<void> deleteProduct(String itemId) async {
+    try {
+      CollectionReference collection = _firebaseFirestore.collection('items');
+      DocumentReference itemDocument = collection.doc(itemId);
+      await itemDocument.delete();
+    } catch (e) {
+      throw Exception('Failed to remove product from Firestore: $e');
+    }
+  }
+    Future<void> updateProduct(ItemModule item) async {
+    try {
+      await _firebaseFirestore
+          .collection('products')
+          .doc(item.id)
+          .update(item.toJson());
+    } catch (e) {
+      throw Exception('Failed to update product in Firestore: $e');
+    }
+  }
 }

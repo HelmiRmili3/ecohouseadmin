@@ -21,8 +21,8 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
       _shopController.add(items);
     });
     on<AddProduct>(_mapAddProductToState);
-    // on<DeleteProduct>(_mapDeleteProductToState);
-    // on<UpdateProduct>(_mapUpdateProductToState);
+    on<DeleteProduct>(_mapDeleteProductToState);
+    on<UpdateProduct>(_mapUpdateProductToState);
   }
 
   Future<void> _mapAddProductToState(
@@ -36,6 +36,43 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
       repository.addProduct(item);
     } catch (e) {
       throw Exception('Failed to add item to Firestore');
+    }
+  }
+
+  Future<void> _mapDeleteProductToState(
+      DeleteProduct event, Emitter<ShopState> emit) async {
+    try {
+      await repository.deleteImageFromFirebaseStorage(event.item.imageUrl);
+      await repository.deleteProduct(event.item.id);
+    } catch (e) {
+      throw Exception('Failed to delete product to Firestore');
+    }
+  }
+
+  Future<void> _mapUpdateProductToState(
+      UpdateProduct event, Emitter<ShopState> emit) async {
+    try {
+      if (event.image != null) {
+        String oldImageUrl = event.item.imageUrl;
+        await repository
+            .updateProduct(
+              ItemModule(
+                id: event.item.id,
+                name: event.item.name,
+                points: event.item.points,
+                description: event.item.description,
+                imageUrl:
+                    await repository.uploadImageToFirebaseStorage(event.image),
+              ),
+            )
+            .then((value) =>
+                repository.deleteImageFromFirebaseStorage(oldImageUrl));
+      } else {
+        await repository.updateProduct(event.item);
+      }
+      //await repository.deleteImageFromFirebaseStorage(event.product.image);
+    } catch (e) {
+      throw Exception('Failed to update product to Firestore');
     }
   }
 
