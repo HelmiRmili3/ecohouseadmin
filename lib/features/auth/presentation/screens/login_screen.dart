@@ -115,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   //     AuthSignInEvent(
                                   //         email: _emailController.text,
                                   //         password: _passwordController.text));
-                                  Navigator.pushNamed(context, Routes.home);
+                                  Navigator.pushReplacementNamed(context, Routes.home);
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors

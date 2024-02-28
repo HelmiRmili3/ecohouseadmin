@@ -1,30 +1,34 @@
-import 'package:admin/features/items/modules/product.dart';
+
+
+import 'package:admin/features/shop/modules/item.dart';
 
 class SellOrderModule {
-  final List<ProductModule> products;
+  final List<ItemModule> items;
   final String customerId;
   final DateTime orderDate;
-  
+
   SellOrderModule({
-    required this.products,
+    required this.items,
     required this.customerId,
     required this.orderDate,
   });
 
   factory SellOrderModule.fromJson(Map<String, dynamic> json) {
-    List<dynamic> productsJson = json['products'];
-    List<ProductModule> products = productsJson.map((productJson) => ProductModule.fromJson(productJson)).toList();
+    List<dynamic> itemsJson = json['items'];
+    List<ItemModule> items =
+        itemsJson.map((itemJson) => ItemModule.fromJson(itemJson)).toList();
     return SellOrderModule(
-      products: products,
+      items: items,
       customerId: json['customerId'],
       orderDate: DateTime.parse(json['orderDate']),
     );
   }
 
   Map<String, dynamic> toJson() {
-    List<Map<String, dynamic>> productsJson = products.map((product) => product.toJson()).toList();
+    List<Map<String, dynamic>> itemsJson =
+        items.map((product) => product.toJson()).toList();
     return {
-      'products': productsJson,
+      'products': itemsJson,
       'customerId': customerId,
       'orderDate': orderDate.toIso8601String(),
     };
