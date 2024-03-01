@@ -1,6 +1,7 @@
 import 'package:admin/features/shop/bloc/shop_bloc.dart';
 import 'package:admin/features/shop/modules/item.dart';
 import 'package:admin/features/shop/repository/shop_repository.dart';
+import 'package:admin/shared/repository/shared_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,10 @@ class Shop extends StatefulWidget {
 class _ShopState extends State<Shop> {
   @override
   Widget build(BuildContext context) {
-    final ShopBloc shopBloc = ShopBloc(repository: ShopRepository());
+    final ShopBloc shopBloc = ShopBloc(
+      repository: ShopRepository(),
+      sharedRepository: SharedRepository(),
+    );
 
     return StreamBuilder<List<DocumentSnapshot<Object?>>>(
         stream: shopBloc.shopStream,

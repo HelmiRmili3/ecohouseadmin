@@ -6,6 +6,7 @@ import 'package:admin/features/orders/bloc/buy_order_bloc.dart';
 import 'package:admin/features/orders/repository/buy_order_repository.dart';
 import 'package:admin/features/shop/bloc/shop_bloc.dart';
 import 'package:admin/features/shop/repository/shop_repository.dart';
+import 'package:admin/shared/repository/shared_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 List<BlocProvider> getAppProviders() {
@@ -13,6 +14,7 @@ List<BlocProvider> getAppProviders() {
     BlocProvider<ItemsBloc>(
       create: (context) => ItemsBloc(
         repository: ItemsRepository(),
+        sharedRepository: SharedRepository(),
       ),
     ),
     BlocProvider<AuthBloc>(
@@ -23,11 +25,13 @@ List<BlocProvider> getAppProviders() {
     BlocProvider<ShopBloc>(
       create: (context) => ShopBloc(
         repository: ShopRepository(),
+        sharedRepository: SharedRepository(),
       ),
     ),
     BlocProvider<BuyOrderBloc>(
       create: (context) => BuyOrderBloc(
         repository: BuyOrderRespsitory(),
+        sharedRepository: SharedRepository(),
       ),
     ),
 

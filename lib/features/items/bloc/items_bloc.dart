@@ -4,11 +4,14 @@ import 'package:admin/features/items/bloc/items_events.dart';
 import 'package:admin/features/items/bloc/items_states.dart';
 import 'package:admin/features/items/modules/product.dart';
 import 'package:admin/features/items/repository/items_repository.dart';
+import 'package:admin/shared/repository/shared_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
   final ItemsRepository repository;
+  final SharedRepository sharedRepository;
+  String collectionName = "products";
 
   late final StreamSubscription _subscription;
   final _productsController =
@@ -17,7 +20,10 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
   Stream<List<DocumentSnapshot>> get productsStream =>
       _productsController.stream;
 
-  ItemsBloc({required this.repository}) : super(ItemsInitial()) {
+  ItemsBloc({
+    required this.repository,
+    required this.sharedRepository,
+  }) : super(ItemsInitial()) {
     repository.getProducts().listen((products) {
       _productsController.add(products);
     });
@@ -29,8 +35,8 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
   Future<void> _mapAddItemToState(
       AddItem event, Emitter<ItemsState> emit) async {
     try {
-      String imageUrl =
-          await repository.uploadImageToFirebaseStorage(event.selectedImage);
+      String imageUrl = await sharedRepository
+          .uploadImageToFirebaseStorage(event.selectedImage);
       ProductModule productModule = ProductModule(
         id: event.product.id,
         name: event.product.name,
@@ -38,7 +44,7 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
         weight: event.product.weight,
         image: imageUrl,
       );
-      repository.addProduct(productModule);
+      sharedRepository.add(productModule.toJson(), collectionName);
     } catch (e) {
       throw Exception('Failed to add product to Firestore');
     }
@@ -47,8 +53,8 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
   Future<void> _mapRemoveItemToState(
       RemoveItem event, Emitter<ItemsState> emit) async {
     try {
-      await repository.deleteImageFromFirebaseStorage(event.imageUrl);
-      await repository.deleteProduct(event.id);
+      await sharedRepository.deleteImageFromFirebaseStorage(event.imageUrl);
+      await sharedRepository.delete(event.id, collectionName);
     } catch (e) {
       throw Exception('Failed to delete product to Firestore');
     }
@@ -59,23 +65,23 @@ class ItemsBloc extends Bloc<ItemsEvent, ItemsState> {
     try {
       if (event.image != null) {
         String oldImageUrl = event.product.image;
-        await repository
-            .updateProduct(
+        await sharedRepository
+            .update(
               ProductModule(
                 id: event.product.id,
                 name: event.product.name,
                 weight: event.product.weight,
                 pointsPerKg: event.product.pointsPerKg,
-                image:
-                    await repository.uploadImageToFirebaseStorage(event.image),
-              ),
+                image: await sharedRepository
+                    .uploadImageToFirebaseStorage(event.image),
+              ).toJson(),
+              collectionName,
             )
             .then((value) =>
-                repository.deleteImageFromFirebaseStorage(oldImageUrl));
+                sharedRepository.deleteImageFromFirebaseStorage(oldImageUrl));
       } else {
-        await repository.updateProduct(event.product);
+        await sharedRepository.update(event.product.toJson(), collectionName);
       }
-      //await repository.deleteImageFromFirebaseStorage(event.product.image);
     } catch (e) {
       throw Exception('Failed to update product to Firestore');
     }

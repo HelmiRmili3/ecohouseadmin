@@ -1,22 +1,33 @@
 import 'package:admin/features/items/modules/product.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../core/enums.dart';
+
 class BuyOrderModule {
-  final String id; // Added id field
+  final String id;
   final List<ProductModule> products;
   final String customerId;
   final DateTime orderDate;
+  final int totalPrice;
+  final int totalWeight;
+  final Status status;
 
   BuyOrderModule({
     required this.id,
     required this.products,
     required this.customerId,
     required this.orderDate,
+    required this.totalPrice,
+    required this.totalWeight,
+    required this.status,
   });
 
   factory BuyOrderModule.create({
     required List<ProductModule> products,
     required String customerId,
+    required int totalPrice,
+    required int totalWeight,
+    required Status status,
   }) {
     final String id = const Uuid().v1();
     final DateTime orderDate = DateTime.now();
@@ -25,6 +36,9 @@ class BuyOrderModule {
       products: products,
       customerId: customerId,
       orderDate: orderDate,
+      totalPrice: totalPrice,
+      totalWeight: totalWeight,
+      status: status,
     );
   }
 
@@ -34,47 +48,58 @@ class BuyOrderModule {
         .map((productJson) => ProductModule.fromSnapshot(productJson))
         .toList();
     return BuyOrderModule(
-      id: json['id'], // Added id field initialization
+      id: json['id'],
       products: products,
       customerId: json['customerId'],
       orderDate: DateTime.parse(json['orderDate']),
+      totalPrice: json['totalPrice'],
+      totalWeight: json['totalWeight'],
+      status: _getStatusFromString(json['status']),
     );
   }
 
+  factory BuyOrderModule.fromSnapshot(Map<String, dynamic> snapshot) {
+    List<dynamic> productsJson = snapshot['products'];
+    List<ProductModule> products = productsJson
+        .map((productJson) => ProductModule.fromJson(productJson))
+        .toList();
 
-factory BuyOrderModule.fromSnapshot(Map<String, dynamic> snapshot) {
-  // Extract the list of products from the snapshot
-  List<dynamic> productsJson = snapshot['products'];
+    String id = snapshot['id'];
+    String customerId = snapshot['customerId'];
+    DateTime orderDate = DateTime.parse(snapshot['orderDate']);
+    int totalPrice = snapshot['totalPrice'];
+    int totalWeight = snapshot['totalWeight'];
+    Status status = _getStatusFromString(snapshot['status']);
 
-  // Convert each product JSON to a ProductModule object
-  List<ProductModule> products = productsJson
-    .map((productJson) => ProductModule.fromJson(productJson))
-    .toList();
-
-  // Extract other fields from the snapshot
-  String id = snapshot['id'];
-  String customerId = snapshot['customerId'];
-  DateTime orderDate = DateTime.parse(snapshot['orderDate']);
-
-  // Create and return the BuyOrderModule object
-  return BuyOrderModule(
-    id: id,
-    products: products,
-    customerId: customerId,
-    orderDate: orderDate,
-  );
-}
-
-
+    return BuyOrderModule(
+      id: id,
+      products: products,
+      customerId: customerId,
+      orderDate: orderDate,
+      totalPrice: totalPrice,
+      totalWeight: totalWeight,
+      status: status,
+    );
+  }
 
   Map<String, dynamic> toJson() {
     List<Map<String, dynamic>> productsJson =
         products.map((product) => product.toJson()).toList();
     return {
-      'id': id, // Added id field serialization
+      'id': id,
       'products': productsJson,
       'customerId': customerId,
       'orderDate': orderDate.toIso8601String(),
+      'totalPrice': totalPrice,
+      'totalWeight': totalWeight,
+      'status': status.toString().split('.').last, // Convert enum to string
     };
+  }
+
+  static Status _getStatusFromString(String statusString) {
+    return Status.values.firstWhere(
+        (status) =>
+            status.toString().split('.').last == statusString.toLowerCase(),
+        orElse: () => Status.waiting); // Default to waiting if not found
   }
 }

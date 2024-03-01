@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:admin/features/shop/bloc/shop_events.dart';
 import 'package:admin/features/shop/bloc/shop_states.dart';
 import 'package:admin/features/shop/modules/item.dart';
+import 'package:admin/shared/repository/shared_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -10,13 +11,17 @@ import '../repository/shop_repository.dart';
 
 class ShopBloc extends Bloc<ShopEvent, ShopState> {
   final ShopRepository repository;
+  final SharedRepository sharedRepository;
 
   late final StreamSubscription _subscription;
 
   final _shopController = StreamController<List<DocumentSnapshot>>.broadcast();
   Stream<List<DocumentSnapshot>> get shopStream => _shopController.stream;
 
-  ShopBloc({required this.repository}) : super(ShopInitial()) {
+  ShopBloc({
+    required this.repository,
+    required this.sharedRepository,
+  }) : super(ShopInitial()) {
     repository.getItems().listen((items) {
       _shopController.add(items);
     });
@@ -28,12 +33,13 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
   Future<void> _mapAddProductToState(
       AddProduct event, Emitter<ShopState> emit) async {
     try {
-      String imageUrl =
-          await repository.uploadImageToFirebaseStorage(event.selectedImage);
+      String collectionName = "items";
+      String imageUrl = await sharedRepository
+          .uploadImageToFirebaseStorage(event.selectedImage);
       ItemModule item = event.item.copyWith(
         imageUrl: imageUrl,
       );
-      repository.addProduct(item);
+      sharedRepository.add(item.toJson(), collectionName);
     } catch (e) {
       throw Exception('Failed to add item to Firestore');
     }
@@ -42,8 +48,10 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
   Future<void> _mapDeleteProductToState(
       DeleteProduct event, Emitter<ShopState> emit) async {
     try {
-      await repository.deleteImageFromFirebaseStorage(event.item.imageUrl);
-      await repository.deleteProduct(event.item.id);
+      String collectionName = 'items';
+      await sharedRepository
+          .deleteImageFromFirebaseStorage(event.item.imageUrl);
+      await sharedRepository.delete(event.item.id, collectionName);
     } catch (e) {
       throw Exception('Failed to delete product to Firestore');
     }
@@ -52,25 +60,27 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
   Future<void> _mapUpdateProductToState(
       UpdateProduct event, Emitter<ShopState> emit) async {
     try {
+      String collectionName = "items";
+
       if (event.image != null) {
         String oldImageUrl = event.item.imageUrl;
-        await repository
-            .updateProduct(
+        await sharedRepository
+            .update(
               ItemModule(
                 id: event.item.id,
                 name: event.item.name,
                 points: event.item.points,
                 description: event.item.description,
-                imageUrl:
-                    await repository.uploadImageToFirebaseStorage(event.image),
-              ),
+                imageUrl: await sharedRepository
+                    .uploadImageToFirebaseStorage(event.image),
+              ) as Map<String, dynamic>,
+              collectionName,
             )
             .then((value) =>
-                repository.deleteImageFromFirebaseStorage(oldImageUrl));
+                sharedRepository.deleteImageFromFirebaseStorage(oldImageUrl));
       } else {
-        await repository.updateProduct(event.item);
+        await sharedRepository.update(event.item.toJson(), collectionName);
       }
-      //await repository.deleteImageFromFirebaseStorage(event.product.image);
     } catch (e) {
       throw Exception('Failed to update product to Firestore');
     }

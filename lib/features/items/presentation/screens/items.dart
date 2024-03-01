@@ -2,6 +2,7 @@ import 'package:admin/features/items/bloc/items_bloc.dart';
 import 'package:admin/features/items/modules/product.dart';
 import 'package:admin/features/items/presentation/widgets/add_item_card.dart';
 import 'package:admin/features/items/repository/items_repository.dart';
+import 'package:admin/shared/repository/shared_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../widgets/item_card.dart';
@@ -16,7 +17,10 @@ class Items extends StatefulWidget {
 class _ItemsState extends State<Items> {
   @override
   Widget build(BuildContext context) {
-    final ItemsBloc itemsBloc = ItemsBloc(repository: ItemsRepository());
+    final ItemsBloc itemsBloc = ItemsBloc(
+      repository: ItemsRepository(),
+      sharedRepository: SharedRepository(),
+    );
     return StreamBuilder<List<DocumentSnapshot<Object?>>>(
       stream: itemsBloc.productsStream,
       builder: (context, snapshot) {

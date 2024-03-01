@@ -20,11 +20,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text(titles[myCurrentIndex]),
-        centerTitle: true,
-      ),
+      appBar: myCurrentIndex == 1
+          ? null
+          : AppBar(
+              automaticallyImplyLeading: false,
+              title: Text(titles[myCurrentIndex]),
+              centerTitle: true,
+            ),
       body: pages[myCurrentIndex],
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(

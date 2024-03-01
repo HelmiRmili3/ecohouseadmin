@@ -4,6 +4,7 @@ import 'package:admin/features/auth/presentation/widgets/custom_form_field.dart'
 import 'package:admin/features/items/bloc/items_bloc.dart';
 import 'package:admin/features/items/modules/product.dart';
 import 'package:admin/features/items/repository/items_repository.dart';
+import 'package:admin/shared/repository/shared_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -108,8 +109,9 @@ class _UpdateItemPageState extends State<UpdateItemPage> {
                   ),
                   const SizedBox(height: 20),
                   BlocProvider(
-                    create: (context) =>
-                        ItemsBloc(repository: ItemsRepository()),
+                    create: (context) => ItemsBloc(
+                        repository: ItemsRepository(),
+                        sharedRepository: SharedRepository()),
                     child: ElevatedButton(
                       onPressed: updateItem,
                       style: ElevatedButton.styleFrom(
