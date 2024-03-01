@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:admin/features/items/modules/product.dart';
 import 'package:uuid/uuid.dart';
 
@@ -32,7 +31,7 @@ class BuyOrderModule {
   factory BuyOrderModule.fromJson(Map<String, dynamic> json) {
     List<dynamic> productsJson = json['products'];
     List<ProductModule> products = productsJson
-        .map((productJson) => ProductModule.fromJson(productJson))
+        .map((productJson) => ProductModule.fromSnapshot(productJson))
         .toList();
     return BuyOrderModule(
       id: json['id'], // Added id field initialization
@@ -42,22 +41,30 @@ class BuyOrderModule {
     );
   }
 
-factory BuyOrderModule.fromSnapshot(DocumentSnapshot snapshot) {
+
+factory BuyOrderModule.fromSnapshot(Map<String, dynamic> snapshot) {
+  // Extract the list of products from the snapshot
   List<dynamic> productsJson = snapshot['products'];
+
+  // Convert each product JSON to a ProductModule object
   List<ProductModule> products = productsJson
-      .map((productJson) => ProductModule.fromSnapshot(productJson))
-      .toList();
-  
-  // Convert the orderDate string to a DateTime object
+    .map((productJson) => ProductModule.fromJson(productJson))
+    .toList();
+
+  // Extract other fields from the snapshot
+  String id = snapshot['id'];
+  String customerId = snapshot['customerId'];
   DateTime orderDate = DateTime.parse(snapshot['orderDate']);
 
+  // Create and return the BuyOrderModule object
   return BuyOrderModule(
-    id: snapshot.id,
+    id: id,
     products: products,
-    customerId: snapshot['customerId'],
+    customerId: customerId,
     orderDate: orderDate,
   );
 }
+
 
 
   Map<String, dynamic> toJson() {

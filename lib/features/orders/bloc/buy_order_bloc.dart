@@ -4,16 +4,15 @@ import 'package:admin/features/orders/bloc/buy_order_states.dart';
 import 'package:admin/features/orders/modules/buy_order_module.dart';
 import 'package:admin/features/orders/repository/buy_order_repository.dart';
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BuyOrderBloc extends Bloc<OrderEvents, OrderState> {
   final BuyOrderRespsitory repository;
 
   late final StreamSubscription _subscription;
   final _ordersController =
-      StreamController<List<DocumentSnapshot>>.broadcast();
+      StreamController<List<BuyOrderModule>>.broadcast();
 
-  Stream<List<DocumentSnapshot>> get ordersStream => _ordersController.stream;
+  Stream<List<BuyOrderModule>> get ordersStream => _ordersController.stream;
 
   BuyOrderBloc({required this.repository}) : super(OrdersInitial()) {
     repository.getOrders().listen((orders) {
